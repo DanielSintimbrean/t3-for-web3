@@ -7,6 +7,7 @@ import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
+  const secret = trpc.auth.getSecretMessage.useQuery();
 
   return (
     <>
@@ -46,6 +47,10 @@ const Home: NextPage = () => {
           </div>
           <p className="text-2xl text-white">
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+          </p>
+          <p className="text-2xl text-white">
+            Secret Message <br />
+            {secret.data}
           </p>
         </div>
         <Profile></Profile>
