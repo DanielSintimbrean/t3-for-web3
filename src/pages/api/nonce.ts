@@ -1,16 +1,16 @@
-import { ironOptions } from "iron-session";
-import { withIronSessionApiRoute } from "iron-session/next";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { generateNonce } from "siwe";
+import { withSessionAPI } from "../../lib/iron-session";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = req.session;
   const { method } = req;
   switch (method) {
     case "GET":
-      req.session.nonce = generateNonce();
-      await req.session.save();
+      session.nonce = generateNonce();
+      await session.save();
       res.setHeader("Content-Type", "text/plain");
-      res.send(req.session.nonce);
+      res.send(session.nonce);
       break;
     default:
       res.setHeader("Allow", ["GET"]);
@@ -18,4 +18,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default withIronSessionApiRoute(handler, ironOptions);
+export default withSessionAPI(handler);

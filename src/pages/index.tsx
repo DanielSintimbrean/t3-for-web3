@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { Profile } from "../componests/siwe/Profile";
 
 import { trpc } from "../utils/trpc";
 
@@ -47,6 +48,7 @@ const Home: NextPage = () => {
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </p>
         </div>
+        <Profile></Profile>
       </main>
     </>
   );
