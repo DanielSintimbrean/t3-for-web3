@@ -1,35 +1,20 @@
 import * as React from "react";
 import { useAccount, useNetwork, useSignMessage } from "wagmi";
 import { SiweMessage } from "siwe";
+import { useIsMounted } from "../../hooks/useIsMounted";
+import { trpc } from "../../utils/trpc";
+import { useSession } from "../../hooks/useSession";
 
-function SignInButton({
-  onSuccess,
-  onError,
-}: {
-  onSuccess: (args: { address: string }) => void;
-  onError: (args: { error: Error }) => void;
-}) {
+function SignInButton() {
   const [state, setState] = React.useState<{
     loading?: boolean;
-    nonce?: string;
   }>({});
 
-  const fetchNonce = async () => {
-    try {
-      const nonceRes = await fetch("/api/nonce");
-      const nonce = await nonceRes.text();
-      setState((x) => ({ ...x, nonce }));
-    } catch (error) {
-      setState((x) => ({ ...x, error: error as Error }));
-    }
-  };
-
-  // Pre-fetch random nonce when button is rendered
-  // to ensure deep linking works for WalletConnect
-  // users on iOS when signing the SIWE message
-  React.useEffect(() => {
-    fetchNonce();
-  }, []);
+  const { mutateAsync: verifyMutate } = trpc.auth.verify.useMutation();
+  const nonceQuery = trpc.auth.nonce.useQuery(undefined, {
+    enabled: false,
+  });
+  const { authenticated } = useSession();
 
   const { address } = useAccount();
   const { chain } = useNetwork();
@@ -40,7 +25,10 @@ function SignInButton({
       const chainId = chain?.id;
       if (!address || !chainId) return;
 
+      const { data: nonceData } = await nonceQuery.refetch();
+
       setState((x) => ({ ...x, loading: true }));
+
       // Create SIWE message with pre-fetched nonce and sign with wallet
       const message = new SiweMessage({
         domain: window.location.host,
@@ -49,86 +37,59 @@ function SignInButton({
         uri: window.location.origin,
         version: "1",
         chainId,
-        nonce: state.nonce,
+        nonce: nonceData?.nonce,
       });
       const signature = await signMessageAsync({
         message: message.prepareMessage(),
       });
 
       // Verify signature
-      const verifyRes = await fetch("/api/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message, signature }),
-      });
-      if (!verifyRes.ok) throw new Error("Error verifying message");
+      const verifyRes = await verifyMutate({ message, signature });
 
-      setState((x) => ({ ...x, loading: false }));
-      onSuccess({ address });
+      if (!verifyRes.ok) throw new Error("Error verifying message");
     } catch (error) {
-      setState((x) => ({ ...x, loading: false, nonce: undefined }));
-      onError({ error: error as Error });
-      fetchNonce();
+    } finally {
+      setState((x) => ({ ...x, loading: false }));
     }
   };
 
   return (
-    <button disabled={!state.nonce || state.loading} onClick={signIn}>
+    <button
+      className="text-white"
+      disabled={state.loading || authenticated}
+      onClick={signIn}
+    >
       Sign-In with Ethereum
     </button>
   );
 }
 
 export function Profile() {
+  const { mutateAsync: logOut } = trpc.auth.logout.useMutation();
   const { isConnected } = useAccount();
-
-  const [state, setState] = React.useState<{
-    address?: string;
-    error?: Error;
-    loading?: boolean;
-  }>({});
+  const isMounted = useIsMounted();
 
   // Fetch user when:
-  React.useEffect(() => {
-    const handler = async () => {
-      try {
-        const res = await fetch("/api/me");
-        const json = await res.json();
-        setState((x) => ({ ...x, address: json.address }));
-      } catch (_error) {}
-    };
-    // 1. page loads
-    handler();
+  const { session } = useSession();
 
-    // 2. window is focused (in case user logs out of another window)
-    window.addEventListener("focus", handler);
-    return () => window.removeEventListener("focus", handler);
-  }, []);
-
-  if (isConnected) {
+  if (isConnected && isMounted) {
     return (
       <div>
         {/* Account content goes here */}
 
-        {state.address ? (
+        {session?.user?.address ? (
           <div>
-            <div>Signed in as {state.address}</div>
+            <div>Signed in as {session.user.address}</div>
             <button
               onClick={async () => {
-                await fetch("/api/logout");
-                setState({});
+                await logOut();
               }}
             >
               Sign Out
             </button>
           </div>
         ) : (
-          <SignInButton
-            onSuccess={({ address }) => setState((x) => ({ ...x, address }))}
-            onError={({ error }) => setState((x) => ({ ...x, error }))}
-          />
+          <SignInButton />
         )}
       </div>
     );
