@@ -2,6 +2,7 @@ import { generateNonce, SiweMessage } from "siwe";
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { siweMessageSchema } from "../../../utils/validator/siwe";
+import { TRPCError } from "@trpc/server";
 
 export const authRouter = router({
   getSession: publicProcedure.query(({ ctx }) => {
@@ -46,27 +47,25 @@ export const authRouter = router({
       })
     )
     .mutation(async (req) => {
+      const siweMessage = new SiweMessage(req.input.message as SiweMessage);
+      let fields;
+
       try {
-        const siweMessage = new SiweMessage(req.input.message as SiweMessage);
-        const fields = await siweMessage.validate(req.input.signature);
-
-        // To access the express request to need to refer to ctx from the full request
-        // As req.ctx.req
-        if (fields.nonce !== req.ctx.session.nonce) {
-          throw new Error("Invalid nonce.");
-        }
-
-        req.ctx.session.siwe = fields;
-        req.ctx.session.user = { address: siweMessage.address };
-        await req.ctx.session.save();
-        return { ok: true };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        return {
-          ok: false,
-          error: error?.message ?? "Unknown error",
-        };
+        fields = await siweMessage.verify({
+          signature: req.input.signature,
+          nonce: req.ctx.session.nonce,
+        });
+      } catch {
+        throw new TRPCError({
+          message: "Invalid signature",
+          code: "BAD_REQUEST",
+        });
       }
+
+      req.ctx.session.siwe = fields.data;
+      req.ctx.session.user = { address: siweMessage.address };
+      await req.ctx.session.save();
+      return { ok: true };
     }),
   /**
    * Logout
