@@ -46,26 +46,42 @@ export const authRouter = router({
         signature: z.string(),
       })
     )
-    .mutation(async (req) => {
-      const siweMessage = new SiweMessage(req.input.message as SiweMessage);
-      let fields;
-
+    .mutation(async ({ input, ctx }) => {
       try {
-        fields = await siweMessage.verify({
-          signature: req.input.signature,
-          nonce: req.ctx.session.nonce,
+        const siweMessage = new SiweMessage(input.message as SiweMessage);
+
+        // Verify signature if not valid throw an error
+        const fields = await siweMessage.verify({
+          signature: input.signature,
+          nonce: ctx.session.nonce,
         });
+
+        let user = await ctx.prisma.user.findUnique({
+          where: { address: fields.data.address },
+        });
+
+        if (!user) {
+          user = await ctx.prisma.user.create({
+            data: {
+              address: fields.data.address,
+              name: fields.data.address,
+            },
+          });
+        }
+
+        ctx.session.siwe = fields.data;
+        ctx.session.user = { address: siweMessage.address, name: user.name };
+
+        console.log(ctx.session);
+        await ctx.session.save();
+
+        return { ok: true };
       } catch {
         throw new TRPCError({
           message: "Invalid signature",
           code: "BAD_REQUEST",
         });
       }
-
-      req.ctx.session.siwe = fields.data;
-      req.ctx.session.user = { address: siweMessage.address };
-      await req.ctx.session.save();
-      return { ok: true };
     }),
   /**
    * Logout

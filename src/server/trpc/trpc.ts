@@ -18,14 +18,14 @@ export const publicProcedure = t.procedure;
  * users are logged in
  */
 const isAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user || !ctx.session.user.address) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+  if (!ctx.session.user) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You are not logged in",
+    });
   }
   return next({
-    ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
-    },
+    ctx: { ...ctx, user: ctx.session.user },
   });
 });
 

@@ -6,9 +6,7 @@ import { router, protectedProcedure } from "../trpc";
 
 export const mrCryptoRouter = router({
   getMrcNftImages: protectedProcedure.query(async ({ ctx }) => {
-    const mrcNfts = await MrCryptoContract.walletOfOwner(
-      ctx.session.user.address
-    );
+    const mrcNfts = await MrCryptoContract.walletOfOwner(ctx.user.address);
 
     const mrcNftsIds = mrcNfts.map((nft) => nft.toNumber());
 

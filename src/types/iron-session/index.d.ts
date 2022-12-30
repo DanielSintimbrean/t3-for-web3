@@ -9,6 +9,7 @@ declare module "iron-session" {
     expirationTime?: string;
     user?: {
       address: string;
+      name: string;
     };
   }
 }
