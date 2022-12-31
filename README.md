@@ -1,6 +1,9 @@
-# T3 stack para web3
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+<a name="readme-top"></a>
 
-Este repositorio es un ejemplo de una aplicación full stack para web3.
+<h1 align="center">T3 for Web3</h3>
+
+<p align="center">Ejemplo de una aplicación full stack para web3 usado T3 Stack.</p>
 
 La idea es crear un template donde tengas todo configurado para que la aplicación tenga:
 
@@ -10,11 +13,12 @@ La idea es crear un template donde tengas todo configurado para que la aplicaci�
 
 ## Tecnologías usadas
 
-- [Next.js](https://nextjs.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
-- [TypeScript](https://www.typescriptlang.org/)
+ [![Next][Next.js]][Next-url]
+ [![Tailwind][Tailwind]][Tailwind-url]
+ [![Prisma][Prisma]][Prisma-url]
+ [![Typescript][Typescript]][Typescript-url]
+ [![tRPC][tRPC]][tRPC-url]
+
 - [Iron-session](https://github.com/vvo/iron-session)
 - [Siwe](https://login.xyz/)
 - [Wagmi](https://wagmi.sh/)
@@ -116,3 +120,16 @@ export const createContext = async (opts: CreateNextContextOptions) => {
 
 export type Context = inferAsyncReturnType<typeof createContext>;
 ```
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[Prisma]: https://img.shields.io/badge/prisma-1a202c?style=for-the-badge&logo=prisma&logoColor=white
+[Prisma-url]: https://www.prisma.io/
+[tRPC]:https://img.shields.io/badge/trpc-398CCB?style=for-the-badge&logo=trpc&logoColor=white
+[tRPC-url]: https://trpc.io/
+[Tailwind]: https://img.shields.io/badge/tailwind-0A1123?style=for-the-badge&logo=TailwindCSS&logoColor=38BDF8
+[Tailwind-url]: https://tailwindcss.com/
+[Typescript]: https://img.shields.io/badge/typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
+[Typescript-url]: https://www.typescriptlang.org/
