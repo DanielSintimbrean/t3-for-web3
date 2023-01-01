@@ -5,6 +5,8 @@
 
 <p align="center">Ejemplo de una aplicación full stack para web3 usado T3 Stack.</p>
 
+# Sobre el proyectos
+
 La idea es crear un template donde tengas todo configurado para que la aplicación tenga:
 
 - Un inicio de session con la cartera de MetaMask
@@ -18,6 +20,7 @@ La idea es crear un template donde tengas todo configurado para que la aplicaci�
  [![Prisma][Prisma]][Prisma-url]
  [![Typescript][Typescript]][Typescript-url]
  [![tRPC][tRPC]][tRPC-url]
+
  [![IronSession][IronSession]][IronSession-url]
  [![Ethers][Ethers]][Ethers-url]
  [![Siwe][Siwe]][Siwe-url]
@@ -119,6 +122,14 @@ export const createContext = async (opts: CreateNextContextOptions) => {
 
 export type Context = inferAsyncReturnType<typeof createContext>;
 ```
+
+### Crear los endpoints de tRPC para que se pueda autentificar un usuario
+
+Creamos en [src/server/trpc/router/auth.ts](src/server/trpc/router/auth.ts) un nuevo router para la autentificación con los siguientes endpoints
+
+- Nonce: esto tendrá que llamarse justo antes que se quiera hacer login para obtener el nonce que se tiene que firmar
+- Verify: donde se comprueba que la firma del mensaje con el nonce es correcta
+- Logout: para destruir la cookie de iron-session
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
