@@ -5,7 +5,7 @@
 
 <p align="center">Ejemplo de una aplicación full stack para web3 usado T3 Stack.</p>
 
-# Sobre el proyectos
+## Sobre el repositorio
 
 La idea es crear un template donde tengas todo configurado para que la aplicación tenga:
 
@@ -25,6 +25,29 @@ La idea es crear un template donde tengas todo configurado para que la aplicaci�
  [![Ethers][Ethers]][Ethers-url]
  [![Siwe][Siwe]][Siwe-url]
  [![Wagmi][Wagmi]][Wagmi-url]
+
+## Empezar
+
+- Clonar y instalar dependencias
+
+```
+git clone https://github.com/DanielSintimbrean/t3-for-web3.git
+cd t3-for-web3
+pnpm i
+```
+
+- Creamos fichero de configuración y generamos la base de datos sqlite
+
+```
+cp .env.example .env
+pnpm prisma db push
+```
+
+- Levantar el proyecto
+
+```
+pnpm dev
+```
 
 ## ¿Cómo se ha creado?
 
@@ -130,6 +153,10 @@ Creamos en [src/server/trpc/router/auth.ts](src/server/trpc/router/auth.ts) un n
 - Nonce: esto tendrá que llamarse justo antes que se quiera hacer login para obtener el nonce que se tiene que firmar
 - Verify: donde se comprueba que la firma del mensaje con el nonce es correcta
 - Logout: para destruir la cookie de iron-session
+
+### Crear el login en el front
+
+Creamos en [src/componests/siwe/Profile.tsx](src/componests/siwe/Profile.tsx) un componente que nos gestione el login.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
