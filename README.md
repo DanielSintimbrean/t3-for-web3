@@ -36,7 +36,7 @@ cd t3-for-web3
 pnpm i
 ```
 
-- Creamos fichero de configuración y generamos la base de datos sqlite
+- Creamos fichero de variables de entorno y generamos la base de datos sqlite
 
 ```
 cp .env.example .env
