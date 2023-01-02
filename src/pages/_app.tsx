@@ -16,7 +16,7 @@ import "../styles/globals.css";
 // Wagmi configuration
 // ===================
 export const { chains, provider } = configureChains(
-  [mainnet, polygon, optimism, arbitrum],
+  [polygon],
   [publicProvider()]
 );
 
@@ -26,7 +26,7 @@ const { connectors } = getDefaultWallets({
 });
 
 const client = createClient({
-  autoConnect: true,
+  autoConnect: false,
   connectors,
   provider,
 });
@@ -34,7 +34,11 @@ const client = createClient({
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   return (
     <WagmiConfig client={client}>
-      <RainbowKitProvider chains={chains} theme={darkTheme()}>
+      <RainbowKitProvider
+        chains={chains}
+        theme={darkTheme()}
+        modalSize={"compact"}
+      >
         <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>

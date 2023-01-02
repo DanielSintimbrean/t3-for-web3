@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@babel/core": "^7.20.7",
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
     "@prisma/client": "^4.5.0",
     "@rainbow-me/rainbowkit": "^0.8.1",
     "@tanstack/query-core": "^4.20.4",

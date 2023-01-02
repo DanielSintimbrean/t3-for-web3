@@ -2,6 +2,9 @@ lockfileVersion: 5.4
 
 specifiers:
   '@babel/core': ^7.20.7
+  '@ethersproject/abi': ^5.7.0
+  '@ethersproject/bytes': ^5.7.0
+  '@ethersproject/providers': ^5.7.2
   '@prisma/client': ^4.5.0
   '@rainbow-me/rainbowkit': ^0.8.1
   '@tanstack/query-core': ^4.20.4
@@ -40,6 +43,9 @@ specifiers:
 
 dependencies:
   '@babel/core': 7.20.7
+  '@ethersproject/abi': 5.7.0
+  '@ethersproject/bytes': 5.7.0
+  '@ethersproject/providers': 5.7.2
   '@prisma/client': 4.8.0_prisma@4.8.0
   '@rainbow-me/rainbowkit': 0.8.1_ry7zb7rjmmcctcjnj2cs332caq
   '@tanstack/query-core': 4.20.4
@@ -48,7 +54,7 @@ dependencies:
   '@trpc/next': 10.7.0_gmaturtqmtlrknaw65ek5pmv2i
   '@trpc/react-query': 10.7.0_x4ie6nhblo2vtx2aafrgzlfqy4
   '@trpc/server': 10.7.0
-  '@typechain/ethers-v5': 10.2.0_53u2xb7yqqknh4abs3avusnjya
+  '@typechain/ethers-v5': 10.2.0_uvzrz6if4akbrktgtw2vfdalai
   ethers: 5.7.2
   iron-session: 6.3.1_next@13.1.1
   next: 13.1.1_7xlrwlvvs7cv2obrs6a5y6oxxq
@@ -1308,7 +1314,7 @@ packages:
     resolution: {integrity: sha512-kFhlqhzZt5PwVRRDci8oJKMMFGjjq9189stT6bvS9xuuLjRzzwhMShRi99sm/jqhdjWmlXyO3Ncx0rnghUvH+w==}
     dev: false
 
-  /@typechain/ethers-v5/10.2.0_53u2xb7yqqknh4abs3avusnjya:
+  /@typechain/ethers-v5/10.2.0_uvzrz6if4akbrktgtw2vfdalai:
     resolution: {integrity: sha512-ikaq0N/w9fABM+G01OFmU3U3dNnyRwEahkdvi9mqy1a3XwKiPZaF/lu54OcNaEWnpvEYyhhS0N7buCtLQqC92w==}
     peerDependencies:
       '@ethersproject/abi': ^5.0.0
@@ -1318,6 +1324,9 @@ packages:
       typechain: ^8.1.1
       typescript: '>=4.3.0'
     dependencies:
+      '@ethersproject/abi': 5.7.0
+      '@ethersproject/bytes': 5.7.0
+      '@ethersproject/providers': 5.7.2
       ethers: 5.7.2
       lodash: 4.17.21
       ts-essentials: 7.0.3_typescript@4.9.4

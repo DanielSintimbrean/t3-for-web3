@@ -108,7 +108,10 @@ export function Profile() {
             </button>
           </div>
         ) : (
-          <SignInButton />
+          <div className="flex flex-row gap-4">
+            <SignInButton />
+            <ConnectButton showBalance={false} accountStatus={"address"} />
+          </div>
         )}
       </div>
     );
