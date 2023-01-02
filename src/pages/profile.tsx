@@ -2,13 +2,23 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import Layout from "../componests/Layout";
 import { useSession } from "../hooks/useSession";
+import { abi, address } from "../smart-contracts/abi/mrcrypto";
 import { trpc } from "../utils/trpc";
 
 const ProfilePage: NextPage = () => {
   const trpcUtils = trpc.useContext();
   const router = useRouter();
+
+  const { config } = usePrepareContractWrite({
+    abi,
+    address,
+    functionName: "withdraw",
+  });
+
+  const { write, data, isLoading } = useContractWrite(config);
 
   const session = useSession();
   const [newName, setNewName] = useState("");
@@ -64,6 +74,7 @@ const ProfilePage: NextPage = () => {
             </button>
           </form>
         </div>
+
         <div className="flex flex-row justify-center gap-4 p-48">
           {mrcImages &&
             mrcImages.data.map((mrcImage, i) => (
