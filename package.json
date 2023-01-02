@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/core": "^7.20.7",
     "@prisma/client": "^4.5.0",
+    "@rainbow-me/rainbowkit": "^0.8.1",
     "@tanstack/query-core": "^4.20.4",
     "@tanstack/react-query": "^4.16.0",
     "@trpc/client": "^10.0.0",

@@ -4,6 +4,7 @@ import { SiweMessage } from "siwe";
 import { useIsMounted } from "../../hooks/useIsMounted";
 import { trpc } from "../../utils/trpc";
 import { useSession } from "../../hooks/useSession";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 function SignInButton() {
   const trpcUtils = trpc.useContext();
@@ -113,5 +114,9 @@ export function Profile() {
     );
   }
 
-  return <div>{/* Connect wallet content goes here */}</div>;
+  return (
+    <div>
+      <ConnectButton></ConnectButton>
+    </div>
+  );
 }

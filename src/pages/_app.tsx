@@ -3,6 +3,13 @@ import { WagmiConfig, createClient, configureChains } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { trpc } from "../utils/trpc";
+import {
+  darkTheme,
+  getDefaultWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
+
+import "@rainbow-me/rainbowkit/styles.css";
 
 import "../styles/globals.css";
 
@@ -13,15 +20,23 @@ export const { chains, provider } = configureChains(
   [publicProvider()]
 );
 
+const { connectors } = getDefaultWallets({
+  appName: "My RainbowKit App",
+  chains,
+});
+
 const client = createClient({
   autoConnect: true,
+  connectors,
   provider,
 });
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   return (
     <WagmiConfig client={client}>
-      <Component {...pageProps} />
+      <RainbowKitProvider chains={chains} theme={darkTheme()}>
+        <Component {...pageProps} />
+      </RainbowKitProvider>
     </WagmiConfig>
   );
 };
