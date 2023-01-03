@@ -46,6 +46,7 @@ export const authRouter = router({
         signature: z.string(),
       })
     )
+    .output(z.object({ ok: z.boolean() }))
     .mutation(async ({ input, ctx }) => {
       try {
         const siweMessage = new SiweMessage(input.message as SiweMessage);

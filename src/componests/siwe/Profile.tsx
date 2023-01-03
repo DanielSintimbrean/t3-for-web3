@@ -73,49 +73,49 @@ function SignInButton() {
 }
 
 export function Profile() {
-  const trpcUtils = trpc.useContext();
-  const { mutateAsync: logOut } = trpc.auth.logout.useMutation({
-    onSuccess: () => {
-      // Refresh session
-      trpcUtils.auth.getSession.invalidate();
-    },
-  });
-  const { isConnected } = useAccount();
-  const isMounted = useIsMounted();
+  // const trpcUtils = trpc.useContext();
+  // const { mutateAsync: logOut } = trpc.auth.logout.useMutation({
+  //   onSuccess: () => {
+  //     // Refresh session
+  //     trpcUtils.auth.getSession.invalidate();
+  //   },
+  // });
+  // const { isConnected } = useAccount();
+  // const isMounted = useIsMounted();
 
-  // Fetch user when:
-  const { session } = useSession();
+  // // Fetch user when:
+  // const { session } = useSession();
 
-  if (isConnected && isMounted) {
-    return (
-      <div>
-        {/* Account content goes here */}
+  // if (isConnected && isMounted) {
+  //   return (
+  //     <div>
+  //       {/* Account content goes here */}
 
-        {session?.user?.address ? (
-          <div>
-            <div className="font-bold">
-              Signed in as{" "}
-              {session.user.address.slice(0, 6) +
-                "..." +
-                session.user.address.slice(-5, -1)}
-            </div>
-            <button
-              onClick={async () => {
-                await logOut();
-              }}
-            >
-              Sign Out
-            </button>
-          </div>
-        ) : (
-          <div className="flex flex-row gap-4">
-            <SignInButton />
-            <ConnectButton showBalance={false} accountStatus={"address"} />
-          </div>
-        )}
-      </div>
-    );
-  }
+  //       {session?.user?.address ? (
+  //         <div>
+  //           <div className="font-bold">
+  //             Signed in as{" "}
+  //             {session.user.address.slice(0, 6) +
+  //               "..." +
+  //               session.user.address.slice(-5, -1)}
+  //           </div>
+  //           <button
+  //             onClick={async () => {
+  //               await logOut();
+  //             }}
+  //           >
+  //             Sign Out
+  //           </button>
+  //         </div>
+  //       ) : (
+  //         <div className="flex flex-row gap-4">
+  //           <SignInButton />
+  //           <ConnectButton showBalance={false} accountStatus={"address"} />
+  //         </div>
+  //       )}
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>

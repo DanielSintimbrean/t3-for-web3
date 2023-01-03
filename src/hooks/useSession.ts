@@ -18,10 +18,12 @@ type SessionType = {
 type Session = Authenticated | Unauthenticated;
 
 export function useSession(): Session {
-  const { data: session, isFetching: loading } = trpc.auth.getSession.useQuery(
+  const { data: session, isLoading: _loading } = trpc.auth.getSession.useQuery(
     undefined,
-    {}
+    { cacheTime: 1000, retryDelay: 1000 }
   );
+
+  const loading = _loading;
 
   const authenticated = !!session?.user;
 
