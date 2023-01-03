@@ -8,11 +8,13 @@ const Home: NextPage = () => {
   const trpcUtils = trpc.useContext();
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const secret = trpc.auth.getSecretMessage.useQuery(undefined, {
-    onError(err) {
-      console.log("Error", err);
-      trpcUtils.auth.getSecretMessage.setData(undefined, "unauthenticated");
+    retry(failureCount, error) {
+      if (error?.shape?.data.code === "UNAUTHORIZED") {
+        trpcUtils.auth.getSecretMessage.setData(undefined, "Not logged in");
+        return false;
+      }
+      return true;
     },
-    retry: 0,
   });
 
   return (
