@@ -41,3 +41,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 src/smart-contracts/types/*
+
+# docker 
+data
