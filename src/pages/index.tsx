@@ -1,13 +1,19 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import Layout from "../componests/Layout";
 
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
+  const trpcUtils = trpc.useContext();
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-  const secret = trpc.auth.getSecretMessage.useQuery();
+  const secret = trpc.auth.getSecretMessage.useQuery(undefined, {
+    onError(err) {
+      console.log("Error", err);
+      trpcUtils.auth.getSecretMessage.setData(undefined, "unauthenticated");
+    },
+    retry: 0,
+  });
 
   return (
     <Layout>

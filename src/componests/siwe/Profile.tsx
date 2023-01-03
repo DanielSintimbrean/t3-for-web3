@@ -15,7 +15,7 @@ function SignInButton() {
   const { mutateAsync: verifyMutate } = trpc.auth.verify.useMutation({
     onSuccess: () => {
       // Refresh session
-      trpcUtils.auth.getSession.invalidate();
+      trpcUtils.auth.invalidate();
     },
   });
 

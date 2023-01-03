@@ -48,13 +48,13 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
 
   const { mutateAsync: verify } = trpc.auth.verify.useMutation({
     onSuccess: () => {
-      utils.auth.getSession.invalidate();
+      utils.auth.invalidate();
     },
   });
 
   const { mutateAsync: logOut } = trpc.auth.logout.useMutation({
     onSuccess: () => {
-      utils.auth.getSession.invalidate();
+      utils.auth.invalidate();
     },
   });
 
